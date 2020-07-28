@@ -1,14 +1,18 @@
-# Default starter for Gridsome
+# Gridsome Dgraph
+This is a simple gridsome skeleton that includes  
+[idb](https://www.npmjs.com/package/idb) for offline first experiments  
+and [dgraph-js-http](https://github.com/dgraph-io/dgraph-js-http)
 
-This is the project you get when you run `gridsome create new-project`.
+### Configuration
+You need to point dgraph at your alpha endpoint:
+```js
+function newClientStub() {
+    return new dgraph.DgraphClientStub(`https://${your.dgraphhttps.endpoint}`)
+}
+```
 
-### 1. Install Gridsome CLI tool if you don't have
+### To run the project in dev mode
+1. yarn
+2. `gridsome develop` to start a local dev server at `http://localhost:8080`
 
-`npm install --global @gridsome/cli`
-
-### 2. Create a Gridsome project
-
-1. `gridsome create my-gridsome-site` to install default starter
-2. `cd my-gridsome-site` to open the folder
-3. `gridsome develop` to start a local dev server at `http://localhost:8080`
-4. Happy coding 🎉🙌
+> note: This project is adapted from the default starter for Gridsome that you get when you run `gridsome create new-project`.
