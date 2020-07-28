@@ -26,33 +26,6 @@ async function createData(dgraphClient) {
     // Create a new transaction.
     const txn = dgraphClient.newTxn();
     try {
-        // Create data.
-        // const p = {
-        //     name: "Alice",
-        //     age: 26,
-        //     married: true,
-        //     loc: {
-        //         type: "Point",
-        //         coordinates: [1.1, 2],
-        //     },
-        //     dob: new Date(1980, 1, 1, 23, 0, 0, 0),
-        //     friend: [
-        //         {
-        //             name: "Bob",
-        //             age: 24,
-        //         },
-        //         {
-        //             name: "Charlie",
-        //             age: 29,
-        //         }
-        //     ],
-        //     school: [
-        //         {
-        //             name: "Crown Public School",
-        //         }
-        //     ]
-        // };
-
         // Run mutation.  https://github.com/dgraph-io/dgraph-js-http/blob/master/src/clientStub.ts#L199
         const assigned = await txn.mutate({ setNquads: initialDataSet });
 
@@ -102,7 +75,7 @@ async function mutateData(
         dgraphClient = newClient(newClientStub()),
         trx = dgraphClient.newTxn()
     ) {
-    query.commitNow = query.commitNow ?? true  // default to true only if null or undefined
+    if(query.commitNow !== false)  query.commitNow = true  // default to true if not explicitly set to false
     const res = await trx.mutate(query)
     const dataset = res.data
 
