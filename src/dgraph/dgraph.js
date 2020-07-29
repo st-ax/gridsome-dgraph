@@ -3,7 +3,7 @@ const dgraph = require("dgraph-js-http")
 const { schema, initialDataSet, everyoneQuery } = require('./mockdata')
 // Create a client stub.
 function newClientStub() {
-    return new dgraph.DgraphClientStub("https://dghttp.tam.ma")
+    return new dgraph.DgraphClientStub(process.env.GRIDSOME_DGRAPH_URL)
 }
 
 // Create a client.

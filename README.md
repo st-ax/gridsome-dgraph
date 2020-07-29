@@ -4,14 +4,19 @@ This is a simple gridsome skeleton that includes
 and [dgraph-js-http](https://github.com/dgraph-io/dgraph-js-http)
 
 ### Configuration
-You need to point dgraph at your alpha endpoint:
+You need to point dgraph at your alpha endpoint by adapting the [.env file](https://gridsome.org/docs/environment-variables/)  
+to include the GRIDSOME_DGRAPH_URL variable:
+```
+GRIDSOME_DGRAPH_URL=https://your.dgraph.endpoint
+```
+which is used here in dgraph.js:
 ```js
 function newClientStub() {
-    return new dgraph.DgraphClientStub(`https://${your.dgraphhttps.endpoint}`)
+    return new dgraph.DgraphClientStub(process.env.GRIDSOME_DGRAPH_URL)
 }
 ```
 
-### To run the project in dev mode
+### To run the project in dev mode (from the root of the project directory)
 1. yarn
 2. `gridsome develop` to start a local dev server at `http://localhost:8080`
 
