@@ -116,6 +116,7 @@ export default {
             let newValue=changeSet[eachKey][eachFieldName]
             mu += `
               <${eachuid}> <${eachFieldName}@en> "${newValue}" .
+              <${eachuid}> <modified> "${(new Date()).toISOString()}" .
             `
             this.dataset[eachKey][eachFieldName] = newValue
           } else {

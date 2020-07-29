@@ -3,6 +3,8 @@ const schema = `
 
 type Person {
     name
+    created
+    modified
     age
     friendship
     owns_pet
@@ -15,6 +17,8 @@ type Animal {
 # Define Directives and index
 
 name: string @index(term) @lang .
+created: datetime @index(hour) .
+modified: datetime @index(hour) .
 age: int @index(int) .
 friendship: [uid] @count .
 owns_pet: [uid] .
@@ -23,6 +27,8 @@ owns_pet: [uid] .
 const initialDataSet =
 `_:michael <name> "Michael" .
 _:michael <dgraph.type> "Person" .
+_:michael <created> "${(new Date()).toISOString()}" .
+
 _:michael <age> "39" .
 _:michael <friendship> _:amit (close=true, since=2019-03-28T14:00:00-06:00) .
 _:michael <friendship> _:sarah .
@@ -35,6 +41,7 @@ _:amit <name> "अमित"@hi .
 _:amit <name> "অমিত"@bn .
 _:amit <name> "Amit"@en .
 _:amit <dgraph.type> "Person" .
+_:amit <created> "${(new Date()).toISOString()}" .
 _:amit <age> "35" .
 _:amit <friendship> _:michael (close=false, since=2019-03-28T14:00:00-06:00) .
 _:amit <friendship> _:sang .
@@ -42,21 +49,25 @@ _:amit <friendship> _:artyom .
 
 _:luke <name> "Luke"@en .
 _:luke <dgraph.type> "Person" .
+_:luke <created> "${(new Date()).toISOString()}" .
 _:luke <name> "Łukasz"@pl .
 _:luke <age> "77" .
 
 _:artyom <name> "Артём"@ru .
 _:artyom <name> "Artyom"@en .
 _:artyom <dgraph.type> "Person" .
+_:artyom <created> "${(new Date()).toISOString()}" .
 _:artyom <age> "35" .
 
 _:sarah <name@en> "Sarah" .
 _:sarah <dgraph.type> "Person" .
+_:sarah <created> "${(new Date()).toISOString()}" .
 _:sarah <age> "55" .
 
 _:sang <name> "상현"@ko .
 _:sang <name> "Sang Hyun"@en .
 _:sang <dgraph.type> "Person" .
+_:sang <created> "${(new Date()).toISOString()}" .
 _:sang <age> "24" .
 _:sang <friendship> _:amit .
 _:sang <friendship> _:catalina .
@@ -66,22 +77,27 @@ _:sang <owns_pet> _:goldie .
 _:hyung <name> "형신"@ko .
 _:hyung <name> "Hyung Sin"@en .
 _:hyung <dgraph.type> "Person" .
+_:hyung <created> "${(new Date()).toISOString()}" .
 _:hyung <friendship> _:sang .
 
 _:catalina <name> "Catalina" .
 _:catalina <dgraph.type> "Person" .
+_:catalina <created> "${(new Date()).toISOString()}" .
 _:catalina <age> "19" .
 _:catalina <friendship> _:sang .
 _:catalina <owns_pet> _:perro .
 
 _:rammy <name> "Rammy the sheep" .
 _:rammy <dgraph.type> "Animal" .
+_:rammy <created> "${(new Date()).toISOString()}" .
 
 _:goldie <name> "Goldie" .
 _:goldie <dgraph.type> "Animal" .
+_:goldie <created> "${(new Date()).toISOString()}" .
 
 _:perro <name> "Perro" .
 _:perro <dgraph.type> "Animal" .
+_:perro <created> "${(new Date()).toISOString()}" .
 `
 const everyoneQuery = 
 `

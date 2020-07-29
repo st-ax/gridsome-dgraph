@@ -76,12 +76,21 @@ async function mutateData(
         trx = dgraphClient.newTxn()
     ) {
     if(query.commitNow !== false)  query.commitNow = true  // default to true if not explicitly set to false
-    const res = await trx.mutate(query)
-    const dataset = res.data
+    let dataset
+    try {
+        const res = await trx.mutate(query)
+        dataset = res.data
 
-    // Print results.
-    console.log(`Mutation Dataset:`, dataset)
-
+        // Print results.
+        console.log(`Mutation Dataset:`, dataset)
+            
+        if(query.commitNow === false)  await trx.commit() // TODO consider if there is a scenario for mutateDataNoCommit()
+        
+    } finally {
+        // Clean up. Calling this after trx.commit() is a no-op
+        // and hence safe.
+        await trx.discard(); // TODO find out if this is a meaningful formality or a waste of code
+    }
     return dataset
 }
 
