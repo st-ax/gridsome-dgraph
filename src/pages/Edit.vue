@@ -4,12 +4,13 @@
      <tree-view
       :data="dataset"
       :options="{
-        modifiable: true,
+        modifiable: false,
         maxDepth: 2}"
       @change-data="treeUpdated"
     />
     <div style="height: 500px;"> <!-- The parent height is required -->
       <vue-editable-grid
+        style="height: 500px;"
         class="grid"
         ref="grid"
         :column-defs="columnDefs"
@@ -156,7 +157,7 @@ export default {
   },
 
   metaInfo: {
-    title: 'About us'
+    title: 'JSON editor'
   }
 }
 </script>

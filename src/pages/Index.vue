@@ -2,17 +2,27 @@
   <Layout>
 
     <!-- Learn how to use images here: https://gridsome.org/docs/images -->
-    <g-image alt="Example image" src="~/favicon.png" width="135" />
+    <g-image alt="gridsome logo" src="~/favicon.png" width="135" />
+    <g-image alt="Dgraph logo" src="https://dgraph.io/assets/images/favicons/android-icon-192x192.png"  style="height: 135px;"  />
+    <g-image alt="DB logo" src="https://api-db.com/images/database.png" style="height: 135px;" />
 
-    <h1>Hello, world!</h1>
+    <h1>Gridsome + Dgraph + idb</h1>
 
     <p>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur excepturi labore tempore expedita, et iste tenetur suscipit explicabo! Dolores, aperiam non officia eos quod asperiores
+      This is a simple skeleton app that initializes a Dgraph DB with mockdata, <br>
+      Renders the data from Dgraph into an expandable JSON tree, <br>
+      and offers editing via vue-editable-grid.
+    </p>
+
+    <p>
+      The offline-first via idb is still very early WIP.
     </p>
 
     <p class="home-links">
       <a href="https://gridsome.org/docs/" target="_blank" rel="noopener">Gridsome Docs</a>
-      <a href="https://github.com/gridsome/gridsome" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/dgraph-io/dgraph" target="_blank" rel="noopener">Dgraph</a>
+      <a href="https://github.com/eledwinn/vue-editable-grid" target="_blank" rel="noopener">vue-editable-grid</a>
+      <a href="https://github.com/jakearchibald/idb" target="_blank" rel="noopener">idb</a>
     </p>
 
   </Layout>
