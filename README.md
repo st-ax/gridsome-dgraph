@@ -1,7 +1,13 @@
 # Gridsome Dgraph
-This is a simple gridsome skeleton that includes  
-[idb](https://www.npmjs.com/package/idb) for offline first experiments  
-and [dgraph-js-http](https://github.com/dgraph-io/dgraph-js-http)
+ This is a simple skeleton app that initializes a Dgraph DB with mockdata, <br>
+      Renders the data from Dgraph into an expandable JSON tree, <br>
+      and offers editing via vue-editable-grid.
+
+Including:  
+[idb](https://www.npmjs.com/package/idb) for offline-first experiments (very early WIP)  
+[dgraph-js-http](https://github.com/dgraph-io/dgraph-js-http)  
+[vue-editable-grid](https://github.com/eledwinn/vue-editable-grid)
+
 
 ### Configuration
 You need to point dgraph at your alpha endpoint by adapting the [.env file](https://gridsome.org/docs/environment-variables/)  
