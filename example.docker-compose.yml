@@ -1,0 +1,54 @@
+version: "2.3"
+
+networks:
+  your_traefik_net:
+    external:
+      name: ${YOUR_TRAEFIK_NET:-traefik}
+services:
+  # dgraph:
+  #   image: dgraph/standalone:latest
+  #   container_name: dgraph
+  zero:
+    image: dgraph/dgraph:master
+    container_name: zero
+    volumes:
+      - ./data/zero:/dgraph
+    restart: unless-stopped
+    command: dgraph zero --my=zero:5080
+    labels:
+      traefik.enable: true
+      traefik.dgzero.frontend.rule: Host:dgzero.${YOUR_TLD:-localhost}
+      traefik.dgzero.port: 6080 #internal port to be exposed on https://HOSTNAME
+    networks:
+      - your_traefik_net
+      - default
+  alpha:
+    image: dgraph/dgraph:master
+    container_name: alpha
+    volumes:
+      - ./data/alpha:/dgraph
+    # restart: unless-stopped # uncommenting this makes shutting down the instance in order to debug impossible
+    command: dgraph alpha --my=alpha:7080 --lru_mb=2048 --zero=zero:5080 --whitelist 172.16.0.0:172.23.0.0
+    labels:
+      traefik.enable: true
+      traefik.dghttp.frontend.rule: Host:dghttp.${YOUR_TLD:-localhost}
+      traefik.dghttp.port: 8080
+      traefik.dgrpc.frontend.rule: Host:dgrpc.${YOUR_TLD:-localhost}
+      traefik.dgrpc.port: 9080
+      traefik.docker.network: your_traefik_net
+    networks:
+      - your_traefik_net
+      - default
+
+  ratel:
+    image: dgraph/dgraph:master
+    restart: unless-stopped
+    command: dgraph-ratel
+    labels:
+      traefik.enable: true
+      traefik.dgraph.frontend.rule: Host:dgraph.${YOUR_TLD:-localhost}
+      traefik.dgraph.port: 8000 #internal port to be exposed on https://HOSTNAME
+      traefik.docker.network: your_traefik_net
+    networks:
+      - your_traefik_net
+      - default
