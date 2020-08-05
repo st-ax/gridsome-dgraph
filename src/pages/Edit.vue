@@ -25,84 +25,30 @@
 </template>
 
 <script>
-import { openDB, deleteDB, wrap, unwrap } from 'idb/with-async-ittr.js'
-import { queryData, mutateData } from '../dgraph/dgraph'
+import { mutateData } from '../data/dgraph'
+import { getEveryone, addFrienshipsLater, offDB } from '../data/sync'
 import { diff, addedDiff, deletedDiff, updatedDiff, detailedDiff } from 'deep-object-diff'
 
 const columnDefs = [
-  { field: "uid", headerName: 'uid', type:'text',sortable: true, filter: true, editable: true },
-  { field: "name", headerName: 'name',type:'text',sortable: true, filter: true, editable: true },
-  { field: "friendship", headerName: 'friendship',type:'text',sortable: true, filter: true, editable: true },
+  { field: "uid", headerName: 'uid', type:'text',sortable: true, filter: true, editable: false },
+  { field: "name@en", headerName: 'name@en',type:'text',sortable: true, filter: true, editable: true },
+  { field: "friendships", headerName: 'friendships',type:'text',sortable: true, filter: true, editable: false },
 ]
-
-
-
-let dbPromise, iDB,
-  DB_NAME='DemoDB',
-  SCHEMA_VERSION='1',
-  initDB = async () => {
-    console.log('initializing',DB_NAME, SCHEMA_VERSION)
-    dbPromise = await openDB(DB_NAME, SCHEMA_VERSION, {
-      upgrade(db, oldVersion, newVersion, transaction) {
-        console.log('upgrading iDB to:', newVersion)
-        db.createObjectStore('people',{
-          keyPath: 'uid',
-        })
-      },
-      blocked() {
-        // …
-      },
-      blocking() {
-        // …
-      },
-      terminated() {
-        // …
-      },
-    })
-    
-    iDB = {
-      async get(key) {
-        return dbPromise.get('people', key);
-      },
-      async set(val,key) {
-        return dbPromise.put('people', val, key);
-      },
-      async delete(key) {
-        return dbPromise.delete('people', key);
-      },
-      async clear() {
-        return dbPromise.clear('people');
-      },
-      async keys() {
-        return dbPromise.getAllKeys('people');
-      },
-    };
-    console.log('iDB', iDB)
-    return iDB
-  }
 
 export default {
   
   async created() {
-    this.initDB()
-   
-    queryData().then((res) => {
-      console.log("Fetch from dgraph:",res);
-      this.dataset = res.everyone || []
-    }).catch((e) => {
-      console.log("ERROR in initial fetch: ", e);
-    });
+    this.dataset = await getEveryone()
+    addFrienshipsLater(this, 'dataset') // a rather funky attempt to allow functions in the sync module to directly update Vue data model and trigger rerender - a prep for "subscriptions"
   },
   data() {
     return {
-      iDB,
-      dbPromise,
+      // offDB,
       dataset: [],
       columnDefs
     }
   },
   methods: {
-    initDB,
     treeUpdated: async function treeUpdated(newData) {
       console.log('treeUpdated:', newData)
       const changeSet= updatedDiff(this.dataset,newData)
@@ -132,20 +78,43 @@ export default {
       
     },
     cellUpdated: async (newData) => {
+      const modDate=new Date()
+      newData.row.modified=modDate.toISOString()
       console.log('cellUpdated:', newData)
-      // console.log('in updated iDB', iDB)
-      if(!iDB) console.log('needed to init:', await initDB())
-      // const tx = iDB.transaction('people', 'readwrite');
-      // const store = tx.objectStore('people');
-      const val = (await iDB.get(newData.row.uid)) || newData;
-      console.log('current record:',val);
-      await iDB.set(newData.row);
+
+      console.log('offDB',offDB);
+      
+      // Dexie
+      const dexVal = (await offDB.people.get(newData.row.uid)) || newData;
+      console.log('current dexie record:', dexVal);
+
+      await offDB.people.put(newData.row,newData.row.uid);
+      
       const mu = `
-        <${newData.row.uid}> <${newData.column.field}@en> "${newData.value}" .
+        <${newData.row.uid}> <${newData.column.field}> "${newData.value}" .
+        <${newData.row.uid}> <modified> "${newData.row.modified}" .
       `
       console.log('mutation:', mu)
       await mutateData({setNquads:mu})
       // await tx.done;
+
+      if(newData.column.field=='name@en'){
+        const modTS=modDate.getTime()
+        let st=performance.now()
+        const revs = await offDB.revisions.get(`${newData.row.uid}.${newData.column.field}`)
+        const msForDirectGet = performance.now() - st;
+        st = performance.now()
+        const revsByQuery = await offDB.revisions.where({uid:newData.row.uid,prop:newData.column.field}).first()
+        const msForQuery= performance.now() - st;
+        console.log(`direct: ${msForDirectGet} VS query: ${msForQuery}`, msForQuery-msForDirectGet)
+        const revMap = (revs && revs.revMap) ? revs.revMap : {};
+        revMap[modTS] = newData.value;
+        offDB.revisions.put({
+          revid:`${newData.row.uid}.${newData.column.field}`,
+          uid:newData.row.uid,
+          prop:newData.column.field,
+          revMap})
+      }
       
     },
     rowSelected: ({colData,colIndex,rowData,rowIndex}) => {
@@ -160,4 +129,26 @@ export default {
     title: 'JSON editor'
   }
 }
+
+//////
+// stashing this here as a n example but i don't like the gridsome internal graphql actually
+//////
+// <ul>
+//   {{$page.posts}} 
+//   <li v-for="eachPost in $page.posts.edges" :key="eachPost.post.date">{{eachPost.post.title}}</li>
+// </ul>
+// <page-query>
+// query {
+//   posts: allBlogPost {
+//     edges {
+//       post: node {
+//         date
+//         title
+//         customField
+//       }
+//     }
+//   }
+// }
+// </page-query>
+
 </script>

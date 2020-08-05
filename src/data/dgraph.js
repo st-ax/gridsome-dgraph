@@ -62,7 +62,7 @@ async function queryData(
     // Print results.
     if(dataset.everyone){
         console.log(`Number of records in dataset: ${dataset.everyone.length}`)
-        dataset.everyone.forEach((record) => console.log(record))
+        // dataset.everyone.forEach((record) => console.log(record))
     } else {
         console.log(`Dataset: ${dataset}`)
     }
@@ -100,7 +100,7 @@ async function init() {
     await dropAll(dgraphClient);
     await setSchema(dgraphClient);
     await createData(dgraphClient);
-    await queryData(dgraphClient);
+    // await queryData(dgraphClient);
 }
 
 module.exports = { init, queryData, mutateData }
