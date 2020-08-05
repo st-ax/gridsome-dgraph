@@ -3,10 +3,10 @@
 
     <!-- Learn how to use images here: https://gridsome.org/docs/images -->
     <g-image alt="gridsome logo" src="~/favicon.png" width="135" />
-    <g-image alt="Dgraph logo" src="https://dgraph.io/assets/images/favicons/android-icon-192x192.png"  style="height: 135px;"  />
-    <g-image alt="DB logo" src="https://api-db.com/images/database.png" style="height: 135px;" />
+    <g-image alt="Dgraph logo" src="https://dgraph.io/assets/images/favicons/android-icon-192x192.png"  style="margin-left: 16px;height: 135px;"  />
+    <g-image alt="DB logo" src="/DexieLogo.png" style="margin-left: 16px;height: 135px;" />
 
-    <h1>Gridsome + Dgraph + idb</h1>
+    <h1>Gridsome + Dgraph + Dexie</h1>
 
     <p>
       This is a simple skeleton app that initializes a Dgraph DB with mockdata, <br>
@@ -15,14 +15,14 @@
     </p>
 
     <p>
-      The offline-first via idb is still very early WIP.
+      The offline-first via Dexie(idb) is still very early WIP.
     </p>
 
     <p class="home-links">
       <a href="https://gridsome.org/docs/" target="_blank" rel="noopener">Gridsome Docs</a>
       <a href="https://github.com/dgraph-io/dgraph" target="_blank" rel="noopener">Dgraph</a>
       <a href="https://github.com/eledwinn/vue-editable-grid" target="_blank" rel="noopener">vue-editable-grid</a>
-      <a href="https://github.com/jakearchibald/idb" target="_blank" rel="noopener">idb</a>
+      <a href="https://github.com/dfahlander/Dexie.js" target="_blank" rel="noopener">Dexie.js</a>
     </p>
 
   </Layout>
@@ -31,7 +31,7 @@
 <script>
 export default {
   metaInfo: {
-    title: 'Hello, world!'
+    title: 'Dgraph offline-first'
   }
 }
 </script>
