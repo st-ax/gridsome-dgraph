@@ -4,7 +4,7 @@
       and offers editing via vue-editable-grid.
 
 Including:  
-[idb](https://www.npmjs.com/package/idb) for offline-first experiments (very early WIP)  
+[Dexie.js](https://github.com/dfahlander/Dexie.js) The offline-first via Dexie(idb) is still very early WIP.
 [dgraph-js-http](https://github.com/dgraph-io/dgraph-js-http)  
 [vue-editable-grid](https://github.com/eledwinn/vue-editable-grid)
 
