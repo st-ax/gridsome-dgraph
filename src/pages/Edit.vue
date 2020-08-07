@@ -26,7 +26,7 @@
 
 <script>
 import { mutateData } from '../data/dgraph'
-import { getEveryone, addFrienshipsLater, offDB } from '../data/sync'
+import { getEveryone, subscribeEveryone, offDB } from '../data/sync'
 import { diff, addedDiff, deletedDiff, updatedDiff, detailedDiff } from 'deep-object-diff'
 
 const columnDefs = [
@@ -39,7 +39,7 @@ export default {
   
   async created() {
     this.dataset = await getEveryone()
-    addFrienshipsLater(this, 'dataset') // a rather funky attempt to allow functions in the sync module to directly update Vue data model and trigger rerender - a prep for "subscriptions"
+    subscribeEveryone(this, 'dataset') // a rather funky attempt to allow functions in the sync module to directly update Vue data model and trigger rerender - a prep for "subscriptions"
   },
   data() {
     return {
@@ -88,17 +88,11 @@ export default {
       const dexVal = (await offDB.people.get(newData.row.uid)) || newData;
       console.log('current dexie record:', dexVal);
 
-      await offDB.people.put(newData.row,newData.row.uid);
       
-      const mu = `
-        <${newData.row.uid}> <${newData.column.field}> "${newData.value}" .
-        <${newData.row.uid}> <modified> "${newData.row.modified}" .
-      `
-      console.log('mutation:', mu)
-      await mutateData({setNquads:mu})
-      // await tx.done;
-
+      // TODO create revisions in single rows (less micro managing here)
+      // TODO consider data model for storing revisions in dgraph ( )
       if(newData.column.field=='name@en'){
+        newData.row.name=newData.value
         const modTS=modDate.getTime()
         let st=performance.now()
         const revs = await offDB.revisions.get(`${newData.row.uid}.${newData.column.field}`)
@@ -115,6 +109,16 @@ export default {
           prop:newData.column.field,
           revMap})
       }
+
+      await offDB.people.put(newData.row,newData.row.uid);
+      
+      const mu = `
+        <${newData.row.uid}> <${newData.column.field}> "${newData.value}" .
+        <${newData.row.uid}> <modified> "${newData.row.modified}" .
+      `
+      console.log('mutation:', mu)
+      await mutateData({setNquads:mu})
+      // await tx.done;
       
     },
     rowSelected: ({colData,colIndex,rowData,rowIndex}) => {
