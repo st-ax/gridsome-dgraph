@@ -36,9 +36,8 @@ const columnDefs = [
 ]
 
 export default {
-  
   async created() {
-    this.dataset = await getEveryone()
+    this.dataset = await getEveryone() // TODO find a less funky way to deal with refs and allow a service layer to directly trigger a render on dataset updates
     subscribeEveryone(this, 'dataset') // a rather funky attempt to allow functions in the sync module to directly update Vue data model and trigger rerender - a prep for "subscriptions"
   },
   data() {
@@ -77,7 +76,7 @@ export default {
         await mutateData({setNquads:mu}) // will commitNow unless overridden here
       
     },
-    cellUpdated: async (newData) => {
+    cellUpdated: async function cellUpdated(newData) {
       const modDate=new Date()
       newData.row.modified=modDate.toISOString()
       console.log('cellUpdated:', newData)
@@ -119,7 +118,7 @@ export default {
       console.log('mutation:', mu)
       await mutateData({setNquads:mu})
       // await tx.done;
-      
+      subscribeEveryone(this) // this will add the friendships and revisions
     },
     rowSelected: ({colData,colIndex,rowData,rowIndex}) => {
       colData && console.log(colData.field,' selected:',rowData[colData.field])
