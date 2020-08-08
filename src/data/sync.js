@@ -24,6 +24,19 @@ const addRevisionsImpure = async function addRevisionsToPeopleArray(peopleArray)
             const revs = await offDB.revisions.get(`${eachPerson.uid}.${eachAttr}`)
             if(revs){
                 eachPerson[`${eachAttr}|history`]=revs.revMap
+            } else {
+                if(eachPerson.created){
+                    const createdTS = new Date(eachPerson.created).getTime()
+                    const eachVal = eachPerson[eachAttr]
+                    const revMap = {[createdTS]:eachVal}
+                    offDB.revisions.put({
+                        revid:`${eachPerson.uid}.${eachAttr}`,
+                        uid:eachPerson.uid,
+                        prop:eachAttr,
+                        revMap
+                    })
+                    eachPerson[`${eachAttr}|history`]=revMap
+                }
             }
         }
     }
