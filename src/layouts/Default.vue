@@ -4,19 +4,10 @@
       <Menubar :model="items">
           <template #start>
             <strong>
-              <g-link to="/">{{ $static.metadata.siteName }}</g-link>
+              <g-link class="nav__link" to="/">{{ $static.metadata.siteName }}</g-link>
             </strong>
-            <g-link class="nav__link" to="/">Home</g-link>
-          </template>
-          <template #end>
-              <g-link class="nav__link" to="/edit/">Editable Grid</g-link>
           </template>
       </Menubar>
-      
-      <!-- <nav class="nav">
-       
-        
-      </nav> -->
     </header>
     <slot/>
   </div>
@@ -63,6 +54,11 @@ export default {
                       }
                    ]
                 },
+                 {
+                   label:'Editable Grid',
+                   icon:'pi pi-fw pi-list',
+                   to:'/edit/',
+                 }
               ]
           }
   }
