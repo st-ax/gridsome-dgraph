@@ -2,8 +2,8 @@
   <Layout>
 
     <!-- Learn how to use images here: https://gridsome.org/docs/images -->
-     <CContainer  fluid="true">
-      <CRow gutters="true">
+     <CContainer  fluid>
+      <CRow gutters>
         <CCol md class="text-center p-shadow-8 p-mr-2 p-p-3">
           <g-image alt="gridsome logo" src="~/favicon.png" width="135" />
         </CCol>
@@ -14,7 +14,7 @@
           <g-image alt="DB logo" src="/DexieLogo.png" style="height: 135px;" />
         </CCol>
       </CRow>
-      <CRow gutters="true" alignHorizontal="center">
+      <CRow gutters alignHorizontal="center">
         <CCol md class="text-center">
           <h1>Gridsome</h1>
         </CCol>
