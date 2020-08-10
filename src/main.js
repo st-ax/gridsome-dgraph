@@ -12,7 +12,8 @@ import CoreuiVue from '@coreui/vue';
 
 
 const cssURLs = [
-  'https://cdn.jsdelivr.net/npm/@coreui/coreui/dist/css/coreui.min.css',
+  'https://cdn.jsdelivr.net/npm/@coreui/coreui/dist/css/coreui.min.css', // this should contain most/all bootstrap css plus the coreui extensions
+  'https://unpkg.com/primeflex@2.0.0-rc.1/primeflex.css', // included for shortcut classes for elevation etc.
 ]
 export default function (Vue, { router, head, isClient }) {
   for(let eachURL of cssURLs){
@@ -29,6 +30,6 @@ export default function (Vue, { router, head, isClient }) {
   Vue.use(TreeView)
 
   // Register Primary UI Library:
-  Vue.use(CoreuiVue)
+  Vue.use(CoreuiVue) // Full import disables tree shaking TODO see: https://coreui.io/vue/docs/introduction/#optimization
 
 }
