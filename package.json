@@ -14,7 +14,6 @@
     "dgraph-js-http": "^20.7.0",
     "gridsome": "^0.7.0",
     "grpc": "^1.24.3",
-    "idb": "^5.0.4",
     "vue-editable-grid": "^0.3.9",
     "vue-json-tree-view": "^2.1.6",
     "worker-plugin": "^4.0.3"
