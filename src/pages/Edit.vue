@@ -26,7 +26,7 @@
 
 <script>
 import { mutateData } from '../data/dgraph'
-import { getEveryone, subscribeEveryone, offDB } from '../data/sync'
+import { getEveryone, subscribeEveryone, updateRecord, offDB } from '../data/sync'
 import { diff, addedDiff, deletedDiff, updatedDiff, detailedDiff } from 'deep-object-diff'
 
 const columnDefs = [
@@ -77,47 +77,7 @@ export default {
       
     },
     cellUpdated: async function cellUpdated(newData) {
-      const modDate=new Date()
-      newData.row.modified=modDate.toISOString()
-      console.log('cellUpdated:', newData)
-
-      console.log('offDB',offDB);
-      
-      // Dexie
-      const dexVal = (await offDB.people.get(newData.row.uid)) || newData;
-      console.log('current dexie record:', dexVal);
-
-      
-      // TODO create revisions in single rows (less micro managing here)
-      // TODO consider data model for storing revisions in dgraph ( )
-      if(newData.column.field=='name@en'){
-        newData.row.name=newData.value
-        const modTS=modDate.getTime()
-        let st=performance.now()
-        const revs = await offDB.revisions.get(`${newData.row.uid}.${newData.column.field}`)
-        const msForDirectGet = performance.now() - st;
-        st = performance.now()
-        const revsByQuery = await offDB.revisions.where({uid:newData.row.uid,prop:newData.column.field}).first()
-        const msForQuery= performance.now() - st;
-        console.log(`direct: ${msForDirectGet} VS query: ${msForQuery}`, msForQuery-msForDirectGet)
-        const revMap = (revs && revs.revMap) ? revs.revMap : {};
-        revMap[modTS] = newData.value;
-        offDB.revisions.put({
-          revid:`${newData.row.uid}.${newData.column.field}`,
-          uid:newData.row.uid,
-          prop:newData.column.field,
-          revMap})
-      }
-
-      await offDB.people.put(newData.row,newData.row.uid);
-      
-      const mu = `
-        <${newData.row.uid}> <${newData.column.field}> "${newData.value}" .
-        <${newData.row.uid}> <modified> "${newData.row.modified}" .
-      `
-      console.log('mutation:', mu)
-      await mutateData({setNquads:mu})
-      // await tx.done;
+      await updateRecord(newData)
       subscribeEveryone(this) // this will add the friendships and revisions
     },
     rowSelected: ({colData,colIndex,rowData,rowIndex}) => {
