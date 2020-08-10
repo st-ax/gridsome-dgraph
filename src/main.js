@@ -2,16 +2,17 @@
 // The Client API can be used here. Learn more: gridsome.org/docs/client-api
 
 import DefaultLayout from '~/layouts/Default.vue'
+
 import VueEditableGrid from 'vue-editable-grid'
+import 'vue-editable-grid/dist/VueEditableGrid.css'
+
 import TreeView from 'vue-json-tree-view'
 
-import 'vue-editable-grid/dist/VueEditableGrid.css'
-import 'primeflex/primeflex.css' 
+import CoreuiVue from '@coreui/vue';
+
 
 const cssURLs = [
-  // 'https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css',
-  'https://unpkg.com/primevue/resources/themes/saga-purple/theme.css',
-  'https://unpkg.com/primeicons/primeicons.css',
+  'https://cdn.jsdelivr.net/npm/@coreui/coreui/dist/css/coreui.min.css',
 ]
 export default function (Vue, { router, head, isClient }) {
   for(let eachURL of cssURLs){
@@ -23,10 +24,11 @@ export default function (Vue, { router, head, isClient }) {
   // Set default layout as a global component
   Vue.component('Layout', DefaultLayout)
 
-  // register component in the Vue app
+  // register components:
   Vue.component('vue-editable-grid', VueEditableGrid)
-
   Vue.use(TreeView)
-  // register component in the Vue app
-  // Vue.component('json-tree-view', TreeView)
+
+  // Register Primary UI Library:
+  Vue.use(CoreuiVue)
+
 }
