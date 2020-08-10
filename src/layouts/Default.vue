@@ -1,17 +1,69 @@
 <template>
   <div class="layout">
     <header class="header">
-      <strong>
-        <g-link to="/">{{ $static.metadata.siteName }}</g-link>
-      </strong>
-      <nav class="nav">
-        <g-link class="nav__link" to="/">Home</g-link>
-        <g-link class="nav__link" to="/edit/">Editable Grid</g-link>
-      </nav>
+      <Menubar :model="items">
+          <template #start>
+            <strong>
+              <g-link class="nav__link" to="/">{{ $static.metadata.siteName }}</g-link>
+            </strong>
+          </template>
+      </Menubar>
     </header>
     <slot/>
   </div>
 </template>
+
+<script>
+import Menubar from 'primevue/menubar';
+export default {
+  components:{
+    Menubar
+  },
+  data() {
+    return {
+      items: [
+                {
+                   label:'More',
+                   icon:'pi pi-fw pi-file',
+                   items:[
+                      {
+                         label:'New',
+                         icon:'pi pi-fw pi-plus',
+                         items:[
+                            {
+                               label:'Bookmark',
+                               icon:'pi pi-fw pi-bookmark'
+                            },
+                            {
+                               label:'Video',
+                               icon:'pi pi-fw pi-video'
+                            },
+
+                         ]
+                      },
+                      {
+                         label:'Delete',
+                         icon:'pi pi-fw pi-trash'
+                      },
+                      {
+                         separator:true
+                      },
+                      {
+                         label:'Export',
+                         icon:'pi pi-fw pi-external-link'
+                      }
+                   ]
+                },
+                 {
+                   label:'Editable Grid',
+                   icon:'pi pi-fw pi-list',
+                   to:'/edit/',
+                 }
+              ]
+          }
+  }
+}
+</script>
 
 <static-query>
 query {

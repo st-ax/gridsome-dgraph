@@ -2,10 +2,19 @@
   <Layout>
 
     <!-- Learn how to use images here: https://gridsome.org/docs/images -->
-    <g-image alt="gridsome logo" src="~/favicon.png" width="135" />
-    <g-image alt="Dgraph logo" src="https://dgraph.io/assets/images/favicons/android-icon-192x192.png"  style="margin-left: 16px;height: 135px;"  />
-    <g-image alt="DB logo" src="/DexieLogo.png" style="margin-left: 16px;height: 135px;" />
-
+    <div class="p-d-flex">
+      <div class="p-shadow-8 p-mr-2 p-p-3">
+        <g-image alt="gridsome logo" src="~/favicon.png" width="135" />
+      </div>
+      <div class="p-shadow-8 p-mr-2 p-p-3">
+        <g-image alt="Dgraph logo" src="https://dgraph.io/assets/images/favicons/android-icon-192x192.png"  style="height: 135px;"  />
+      </div>
+      <div class="p-shadow-8 p-p-3">
+        <g-image alt="DB logo" src="/DexieLogo.png" style="height: 135px;" />
+      </div>
+    </div>
+   
+    
     <h1>Gridsome + Dgraph + Dexie</h1>
 
     <p>

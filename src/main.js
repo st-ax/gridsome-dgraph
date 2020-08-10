@@ -3,11 +3,23 @@
 
 import DefaultLayout from '~/layouts/Default.vue'
 import VueEditableGrid from 'vue-editable-grid'
-import 'vue-editable-grid/dist/VueEditableGrid.css'
- 
 import TreeView from 'vue-json-tree-view'
 
+import 'vue-editable-grid/dist/VueEditableGrid.css'
+import 'primeflex/primeflex.css' 
+
+const cssURLs = [
+  // 'https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css',
+  'https://unpkg.com/primevue/resources/themes/saga-purple/theme.css',
+  'https://unpkg.com/primeicons/primeicons.css',
+]
 export default function (Vue, { router, head, isClient }) {
+  for(let eachURL of cssURLs){
+    head.link.push({
+      rel: 'stylesheet',
+      href: eachURL,
+    })
+  }
   // Set default layout as a global component
   Vue.component('Layout', DefaultLayout)
 

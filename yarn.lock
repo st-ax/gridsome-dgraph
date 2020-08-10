@@ -7104,6 +7104,21 @@ pretty-error@^2.0.2:
     renderkid "^2.0.1"
     utila "~0.4"
 
+primeflex@^2.0.0-rc.1:
+  version "2.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/primeflex/-/primeflex-2.0.0-rc.1.tgz#12eb1b6da04968fd1cf1a3df5c2600ed3837bce8"
+  integrity sha512-NX7n6gLOo8peGhiqgW3ZbeEbN5mjzoFeHrhXL/UBMsQN4ZRHNjYCl4dlSlPmJ/wUO89PcnlT25eW3PnLcxjpcg==
+
+primeicons@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/primeicons/-/primeicons-4.0.0.tgz#a3594b3af213dcf8c4c3d6fc99eea05b7c92f57c"
+  integrity sha512-JQBIswGSItn8I0Pq21RchENpKJxSi1MjfBDfggMQpXtoKNKblJoHmol/7tCV3CAV2Dlb94ht8TD8qdIAW01pGg==
+
+primevue@^2.0.7:
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/primevue/-/primevue-2.0.7.tgz#f45766ca244a3316939e0ec9a113bd63a2907b39"
+  integrity sha512-nwam8prH1lh7V40Vtv1gcOPkQvjpZFNEChrN9pOAgqQHURPNkSK46cKkXsPbTOg2WsdLH960+7oHoi7aLY0+zQ==
+
 probe-image-size@^4.0.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/probe-image-size/-/probe-image-size-4.1.1.tgz#c836c53154b6dd04dbcf66af2bbd50087b15e1dc"
