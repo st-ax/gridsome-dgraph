@@ -11,13 +11,11 @@
     "@coreui/vue": "^3.1.2",
     "deep-object-diff": "^1.1.0",
     "dexie": "^3.0.2",
-    "dgraph-js": "^20.3.0",
-    "dgraph-js-http": "^20.7.0",
+    "dgraph-js-http": "^20.7.1-rc1",
     "gridsome": "^0.7.0",
-    "grpc": "^1.24.3",
-    "vue-editable-grid": "^0.3.9",
+    "vue-editable-grid": "^0.3.12",
     "vue-json-tree-view": "^2.1.6",
-    "worker-plugin": "^4.0.3"
+    "worker-plugin": "^5.0.0"
   },
   "devDependencies": {
     "compression-webpack-plugin": "^4.0.1",
