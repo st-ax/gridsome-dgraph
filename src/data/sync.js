@@ -55,7 +55,7 @@ const getEveryone = async function getEveryone() {
         return everyone // await addFriendshipsImpure(everyone)
     } else {
         pendingInitPromise = deferredPromise()
-        worker.postMessage(['init',{foo:'bar'}]) // calling a worker function with the first arg of the array as the fx name and all other array members are passed as args to the fx
+        worker.postMessage(['init',{paramObject:'testing'}]) // calling a worker function with the first arg of the array as the fx name and all other array members are passed as args to the fx
         return pendingInitPromise
     }
 }
