@@ -72,7 +72,7 @@ import {
   CInput,
   CButton, 
   CDropdown,
-  CDropdownItem } from '@coreui/vue/dist/coreui-vue.umd.min'
+  CDropdownItem } from '@coreui/vue/dist/coreui-vue.umd.min' /// app.js dropped from 9.3MB to 8.1MB by adding /dist/coreui-vue.umd.min
 import { cibCoreui } from '@coreui/icons/js/brand/cib-coreui'
 import { cibCoreuiC } from '@coreui/icons/js/brand/cib-coreui-c'
 export default {

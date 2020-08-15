@@ -10,6 +10,7 @@
     />
     <div style="height: 500px;"> <!-- The parent height is required -->
       <vue-editable-grid
+        id="editMe"
         style="height: 500px;"
         class="grid"
         ref="grid"
