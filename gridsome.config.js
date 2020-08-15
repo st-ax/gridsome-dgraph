@@ -6,6 +6,8 @@
 
 const merge = require('webpack-merge')
 const WorkerPlugin = require('worker-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = {
   siteName: 'Gridsome JSON editor',
@@ -16,7 +18,9 @@ module.exports = {
         globalObject: "(typeof self!='undefined'?self:global)"
       },
       plugins: [
-        new WorkerPlugin()
+        new WorkerPlugin(),
+        new CompressionPlugin(),
+        new BundleAnalyzerPlugin()
       ]
     }, config)
   }

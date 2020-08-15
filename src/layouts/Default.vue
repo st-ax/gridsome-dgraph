@@ -2,17 +2,8 @@
     <div>
     <header class="header">
       <CNavbar expandable="md" type="dark" color="info">
-        <CNavbarBrand href="#">
-          <svg class="logo">
-            <g id="Page-1" stroke="none" stroke-width="1" fill="currentColor" fill-rule="evenodd">
-              <g id="coreui-base" fill="currentColor" fill-rule="nonzero">
-                <g id="Group">
-                <path d="M96,24.1244 L57,1.6077 C53.2871871,-0.535893539 48.7128129,-0.535893539 45,1.6077 L6,24.1243 C2.29226017,26.2730089 0.00693260339,30.2313486 0,34.5167 L0,79.55 C0.0068453397,83.8353487 2.29220098,87.7936989 6,89.9423 L45,112.459 C48.7128129,114.602594 53.2871871,114.602594 57,112.459 L96,89.9423 C99.707799,87.7936989 101.993155,83.8353487 102,79.55 L102,34.5167 C101.993093,30.2313678 99.707754,26.273046 96,24.1244 Z M94,79.55 C94,80.9790618 93.2376038,82.2995691 92,83.0141 L53,105.5308 C51.7623957,106.245331 50.2376043,106.245331 49,105.5308 L10,83.0141 C8.76239619,82.2995691 8,80.9790618 8,79.55 L8,34.5167 C8,33.0876382 8.76239619,31.7671309 10,31.0526 L49,8.5359 C50.2376043,7.82136882 51.7623957,7.82136882 53,8.5359 L92,31.0526 C93.2376038,31.7671309 94,33.0876382 94,34.5167 L94,79.55 Z" id="Shape"></path>
-                <path d="M74.0216,70.0713 L71.1556,70.0713 C70.4827679,70.0712861 69.8208069,70.2410241 69.231,70.5648 L51.95,80.05 L32,68.5315 L32,45.554 L51.95,34.0354 L69.2394,43.4904 C69.8278903,43.8122245 70.4878603,43.9808965 71.1586,43.9809 L74.0218,43.9809 C75.1263695,43.9809 76.0218,43.0854695 76.0218,41.9809 L76.0218,39.2691 C76.0218,38.5380907 75.6230914,37.8652844 74.9818,37.5144 L55.793,27.0188 C53.3404536,25.684951 50.3714915,25.7190213 47.9502,27.1088 L28,38.6262 C25.5283249,40.0590349 24.0048565,42.6979488 24,45.5549 L24,68.5309 C24,71.3890593 25.5247614,74.0301204 28,75.4592 L47.95,86.9778 C50.3719859,88.3663725 53.3408028,88.399644 55.7933,87.0657 L74.9833,76.5345 C75.6233016,76.1832775 76.0210885,75.5112406 76.0211,74.7812 L76.0211,72.0712 C76.0210448,70.9668648 75.1259352,70.0715761 74.0216,70.0713 Z" id="Path"></path>
-                </g>
-              </g>
-            </g>
-          </svg>
+        <CNavbarBrand href="https://coreui.io/vue/docs/introduction/" target="_blank" rel="nofollow">
+          <CIcon size="xl" :content="cibCoreuiC" />
         </CNavbarBrand>
         <CCollapse :show="collapsed" navbar>
           <CNavbarNav>
@@ -70,12 +61,45 @@
 </template>
 
 <script>
+import { 
+  CNavbar,
+  CNavbarBrand,
+  CIcon,
+  CCollapse,
+  CNavbarNav,
+  CNavItem,
+  CForm,
+  CInput,
+  CButton, 
+  CDropdown,
+  CDropdownItem } from '@coreui/vue/dist/coreui-vue.umd.min'
+import { cibCoreui } from '@coreui/icons/js/brand/cib-coreui'
+import { cibCoreuiC } from '@coreui/icons/js/brand/cib-coreui-c'
 export default {
-  // components:{
-  //   Menubar
+  components:{
+    // cibCoreuiC  // didn't work for icon
+    CNavbar,
+    CNavbarBrand,
+    CIcon,
+    CCollapse,
+    CNavbarNav,
+    CNavItem,
+    CForm,
+    CInput,
+    CButton, 
+    CDropdown,
+    CDropdownItem
+  },
+  // icons: {
+  //   cibCoreui, // requires reference like this :content="$options.icons.cibCoreui"
+  //   cibCoreuiC
+  // },
+  // mounted() {
+  //   setTimeout(()=>{this.cibCoreuiC = cibCoreuiC},500) // weird hack to avoid the icon flashing huge before the rest of the css loads
   // },
   data() {
     return {
+      cibCoreuiC, // preferred for simpler reference :content="cibCoreui"
       collapsed:false
     }
   }

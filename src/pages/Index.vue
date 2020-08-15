@@ -50,7 +50,14 @@
 </template>
 
 <script>
+import { CContainer, CCol, CRow } from '@coreui/vue/dist/coreui-vue.umd.min'
+// import { CContainer } from '@coreui/vue/src/components/grid/CContainer'
+// import { CCol } from '@coreui/vue/src/components/grid/CCol'
+// import { CRow } from '@coreui/vue/src/components/grid/CRow'
 export default {
+  components: {
+     CContainer, CCol, CRow
+  },
   metaInfo: {
     title: 'Dgraph offline-first'
   }

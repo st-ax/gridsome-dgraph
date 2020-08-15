@@ -8,18 +8,22 @@ import 'vue-editable-grid/dist/VueEditableGrid.css'
 
 import TreeView from 'vue-json-tree-view'
 
-import CoreuiVue from '@coreui/vue';
+// import CoreuiVue from '@coreui/vue'; // Full import disabled - using tree shaking see: https://coreui.io/vue/docs/introduction/#optimization
+import "@coreui/coreui/dist/css/coreui.min.css" // loading via css CDN below results in a FOUC so I prefer to beef up the app.js - TODO test in production builds
 
-
-const cssURLs = [
-  'https://cdn.jsdelivr.net/npm/@coreui/coreui/dist/css/coreui.min.css', // this should contain most/all bootstrap css plus the coreui extensions
-  'https://unpkg.com/primeflex@2.0.0-rc.1/primeflex.css', // included for shortcut classes for elevation etc.
+const linkURLs = [
+  // ['preload','text/css','https://cdn.jsdelivr.net/npm/@coreui/coreui/dist/css/coreui.min.css','style'], // is never applied
+  // ['stylesheet','text/css','https://cdn.jsdelivr.net/npm/@coreui/coreui/dist/css/coreui.min.css'], // FOUCed
+  // ['preload','image/svg+xml', 'https://unpkg.com/@coreui/icons@1.0.1/sprites/brand.svg'], // preload attempt - failed
+  ['stylesheet','text/css','https://unpkg.com/primeflex@2.0.0-rc.1/primeflex.css'], // included for shortcut classes for elevation etc.
 ]
 export default function (Vue, { router, head, isClient }) {
-  for(let eachURL of cssURLs){
+  for(let [rel, type, href,as] of linkURLs){
     head.link.push({
-      rel: 'stylesheet',
-      href: eachURL,
+      rel,
+      type,
+      href,
+      as
     })
   }
   // Set default layout as a global component
@@ -28,8 +32,13 @@ export default function (Vue, { router, head, isClient }) {
   // register components:
   Vue.component('vue-editable-grid', VueEditableGrid)
   Vue.use(TreeView)
-
+  
   // Register Primary UI Library:
-  Vue.use(CoreuiVue) // Full import disables tree shaking TODO see: https://coreui.io/vue/docs/introduction/#optimization
-
+  // Vue.use(CoreuiVue) // Full import disabled - using tree shaking see: https://coreui.io/vue/docs/introduction/#optimization
+  
+  // ===== Didn't work:
+  // Vue.component('cibCoreuiC',cibCoreuiC)
+  // Vue.component.icons = {
+  //   cibCoreuiC
+  // }
 }
