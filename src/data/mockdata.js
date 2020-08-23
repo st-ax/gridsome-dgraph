@@ -1,7 +1,14 @@
-function convertJStypeObjectToSchemaPropList(jsType){
+const convertJStypeObjectToSchemaPropList= (jsType) => {
   let retString = ''
   for(let eachKey in jsType){
     retString += `    ${eachKey}\n`
+  }
+  return retString
+}
+const convertJSDirectivesToSchemaDirectives = (directives) => {
+  let retString = ''
+  for(let eachKey in directives){
+    retString += `${eachKey}: ${directives[eachKey]} .\n`
   }
   return retString
 }
@@ -17,13 +24,7 @@ const directives = {
     },
     { name,created,modified,age,friendships,owned_pets,owned_by } = directives
 
-const convertJSDirectivesToSchemaDirectives = (directives) => {
-  let retString = ''
-  for(let eachKey in directives){
-    retString += `${eachKey}: ${directives[eachKey]} .\n`
-  }
-  return retString
-}
+
 const PersonType = {
   name,
   created,
@@ -31,7 +32,6 @@ const PersonType = {
   age,
   friendships,
   owned_pets,
-
 }
 const AnimalType = {
   name,

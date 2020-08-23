@@ -3101,6 +3101,13 @@ dgraph-js-http@^20.7.1-rc1:
     isomorphic-fetch "^2.2.1"
     jsonwebtoken "^8.5.1"
 
+"dgraph-offline-first@https://github.com/st-ax/dgraph-offline-first.git":
+  version "20.7.1-rc1"
+  resolved "https://github.com/st-ax/dgraph-offline-first.git#30fbfe8420106f1f27828645059d45290d063157"
+  dependencies:
+    isomorphic-fetch "^2.2.1"
+    jsonwebtoken "^8.5.1"
+
 diffie-hellman@^5.0.0:
   version "5.0.3"
   resolved "https://registry.yarnpkg.com/diffie-hellman/-/diffie-hellman-5.0.3.tgz#40e8ee98f55a2149607146921c63e1ae5f3d2875"

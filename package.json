@@ -12,6 +12,7 @@
     "deep-object-diff": "^1.1.0",
     "dexie": "^3.0.2",
     "dgraph-js-http": "^20.7.1-rc1",
+    "dgraph-offline-first": "https://github.com/st-ax/dgraph-offline-first.git",
     "gridsome": "^0.7.0",
     "vue-editable-grid": "^0.3.12",
     "vue-json-tree-view": "^2.1.6",

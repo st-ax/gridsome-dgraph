@@ -66,64 +66,72 @@ const subscribeEveryone = async function subscribeEveryone(referenceToReset,prop
         console.log('Friendships should show up in 2sec')
         setTimeout(async ()=>{
             console.log('Trying to set the dataset:',referenceToReset)
-            referenceToReset[propname]=await addRevisionsImpure(await addFriendshipsImpure(everyone))
+            referenceToReset[propname]=await addRevisionsImpure(await addFriendshipsImpure(everyone))  // TODO fix hacky vue reactivity style
         },2000)
     }
 }
 
-const updateRecord = async function updateRecord(newData) {
-    const modDate=new Date()
-    newData.row.modified=modDate.toISOString()
-    console.log('cellUpdated:', newData)
-
-    console.log('offDB',offDB);
+const updateRecord = async function updateRecord({row,rowIndex, column, columnIndex, value, ...nonClonableFxs}) {
+    pendingUpdatePromise = deferredPromise()
+    // nonClonableFxs.done()
+    worker.postMessage(['update',{row,rowIndex, column, columnIndex, value}]) // calling a worker function with the first arg of the array as the fx name and all other array members are passed as args to the fx
+    return pendingUpdatePromise
     
-    // Dexie
-    const dexVal = (await offDB.people.get(newData.row.uid)) || newData;
-    console.log('current dexie record:', dexVal);
+    // const modDate=new Date()
+    // newData.row.modified=modDate.toISOString()
+    // console.log('cellUpdated:', newData)
+
+    // console.log('offDB',offDB);
+    
+    // // Dexie
+    // const dexVal = (await offDB.people.get(newData.row.uid)) || newData;
+    // console.log('current dexie record:', dexVal);
 
     
-    // TODO create revisions in single rows (less micro managing here)
-    // TODO consider data model for storing revisions in dgraph ( )
-    if(newData.column.field=='name@en'){
-      newData.row.name=newData.value
-      const modTS=modDate.getTime()
-      let st=performance.now()
-      const revs = await offDB.revisions.get(`${newData.row.uid}.${newData.column.field}`)
-      const msForDirectGet = performance.now() - st;
-      st = performance.now()
-      const revsByQuery = await offDB.revisions.where({uid:newData.row.uid,prop:newData.column.field}).first()
-      const msForQuery= performance.now() - st;
-      console.log(`direct: ${msForDirectGet} VS query: ${msForQuery}`, msForQuery-msForDirectGet)
-      const revMap = (revs && revs.revMap) ? revs.revMap : {};
-      revMap[modTS] = newData.value;
-      offDB.revisions.put({
-        revid:`${newData.row.uid}.${newData.column.field}`,
-        uid:newData.row.uid,
-        prop:newData.column.field,
-        revMap})
-    }
+    // // TODO create revisions in single rows (less micro managing here)
+    // // TODO consider data model for storing revisions in dgraph ( )
+    // if(newData.column.field=='name@en'){
+    //   newData.row.name=newData.value
+    //   const modTS=modDate.getTime()
+    //   let st=performance.now()
+    //   const revs = await offDB.revisions.get(`${newData.row.uid}.${newData.column.field}`)
+    //   const msForDirectGet = performance.now() - st;
+    //   st = performance.now()
+    //   const revsByQuery = await offDB.revisions.where({uid:newData.row.uid,prop:newData.column.field}).first()
+    //   const msForQuery= performance.now() - st;
+    //   console.log(`direct: ${msForDirectGet} VS query: ${msForQuery}`, msForQuery-msForDirectGet)
+    //   const revMap = (revs && revs.revMap) ? revs.revMap : {};
+    //   revMap[modTS] = newData.value;
+    //   offDB.revisions.put({
+    //     revid:`${newData.row.uid}.${newData.column.field}`,
+    //     uid:newData.row.uid,
+    //     prop:newData.column.field,
+    //     revMap})
+    // }
 
-    await offDB.people.put(newData.row,newData.row.uid);
+    // await offDB.people.put(newData.row,newData.row.uid);
     
-    if(isOffline) return // TODO only do the following dgraph mutation if client is online:
-    const mu = `
-      <${newData.row.uid}> <${newData.column.field}> "${newData.value}" (modified=${newData.row.modified}) .
-      <${newData.row.uid}> <modified> "${newData.row.modified}" .
-    `
-    console.log('mutation:', mu)
-    await mutateData({setNquads:mu})    
+    // if(isOffline) return // TODO only do the following dgraph mutation if client is online:
+    // const mu = `
+    //   <${newData.row.uid}> <${newData.column.field}> "${newData.value}" (modified=${newData.row.modified}) .
+    //   <${newData.row.uid}> <modified> "${newData.row.modified}" .
+    // `
+    // console.log('mutation:', mu)
+    // await mutateData({setNquads:mu})    
 }
 
 
-let pendingInitPromise // this reference is a little trick to allow the consumer of getEveryone to await the result
+let pendingInitPromise, pendingUpdatePromise // this reference is a little trick to allow the consumer of getEveryone to await the result
 worker.onmessage = async function messageFromWebWorker(event) {
     console.log("message from worker", event)
-    const {isOffDBready, ...otherPotentialProperties} = event.data
+    const {isOffDBready, isUpdateDone, ...otherPotentialProperties} = event.data
     if(isOffDBready) {
         console.log('offDB is ready to roll', offDB)
         console.log(await offDB.people.count(), ' people in idb')
         pendingInitPromise.resolve(await offDB.people.toArray())
+    } else if(isUpdateDone) {
+        console.log('update is done:', otherPotentialProperties)
+        pendingUpdatePromise.resolve(otherPotentialProperties)
     } else {
         console.warn('unknown message:', otherPotentialProperties)
     }

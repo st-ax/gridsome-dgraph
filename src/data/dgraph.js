@@ -1,4 +1,5 @@
 //https://github.com/dgraph-io/dgraph-js-http/blob/master/examples/simple/index-async-await.js
+const OfflineTxn = require("dgraph-offline-first").OfflineTxn
 const dgraph = require("dgraph-js-http")
 const { schema, initialDataSet, everyoneQuery } = require('./mockdata')
 // Create a client stub.
@@ -73,7 +74,7 @@ async function queryData(
 async function mutateData(
         query,
         dgraphClient = newClient(newClientStub()),
-        trx = dgraphClient.newTxn()
+        trx = new OfflineTxn( dgraphClient )
     ) {
     if(query.commitNow !== false)  query.commitNow = true  // default to true if not explicitly set to false
     let dataset
@@ -89,7 +90,7 @@ async function mutateData(
     } finally {
         // Clean up. Calling this after trx.commit() is a no-op
         // and hence safe.
-        await trx.discard(); // TODO find out if this is a meaningful formality or a waste of code
+        await trx.discard()
     }
     return dataset
 }

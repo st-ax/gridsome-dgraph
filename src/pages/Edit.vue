@@ -1,6 +1,6 @@
 <template>
   <Layout>
-    <h1>JSON editor</h1>
+        <h1>JSON editor</h1>
      <tree-view
       :data="dataset"
       :options="{
@@ -27,7 +27,7 @@
 
 <script>
 import { mutateData } from '../data/dgraph'
-import { getEveryone, subscribeEveryone, updateRecord, offDB } from '../data/sync'
+import { getEveryone, subscribeEveryone, updateRecord } from '../data/sync'
 import { diff, addedDiff, deletedDiff, updatedDiff, detailedDiff } from 'deep-object-diff'
 
 const columnDefs = [
@@ -43,7 +43,6 @@ export default {
   },
   data() {
     return {
-      // offDB,
       dataset: [],
       columnDefs
     }

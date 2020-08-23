@@ -6,7 +6,7 @@ const VERSION = 1,
     .stores({
         people: "uid,name",
         revisions: "revid,uid,prop",
-        friendships: "edgeid,s,o",
+        friendships: "[s+o],s,o",
     }).db
 
 module.exports = { offDB }
